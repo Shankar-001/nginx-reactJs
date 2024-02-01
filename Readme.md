@@ -47,7 +47,9 @@ server {
 
 }
 ```
+
 For example
+
 ```bash
 server {
     listen        80;
@@ -97,3 +99,50 @@ sudo ufw allow 80
 Launch a web browser and go to the IP address of your server or domain. Your React app should be open and functioning.
 
 Recall that this is a simple configuration. You might need to modify the Nginx configuration further, depending on the needs of your application (e.g., for HTTPS, additional security settings, proxying to a backend server, etc.).
+
+To check present working directory address
+
+```bash
+pwd
+```
+
+# For Backend Setup
+
+```bash
+npm i -g pm2
+```
+
+- pm2 - PM2 is a powerful process manager for NodeJS apps that lets you start, control, or end node processes quickly.
+
+- start the pm2 with project backend address
+
+```bash
+pm2 start backend/server.js
+```
+
+- now change the config of sudo nano /etc/nginx/sites-available/myreactapp
+
+```bash
+location / {
+        proxy_pass http://localhost:5000;    # or which other port your app runs on
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+```
+
+- restart the nginx
+
+```bash
+service nginx -restart
+```
+
+- Now check your ur server it's live now
+
+e.g:
+
+```bash
+http://111.11.11.111/PORT_ADDRESS
+```
